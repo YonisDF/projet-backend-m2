@@ -9,6 +9,7 @@ import { JwtAuthGuard } from './infra/persistence/security/jwt-auth.guard';
 import { TypeOrmUserRepository } from './infra/persistence/repositories/typeorm-user.repository';
 import { UsersService } from './app/services/users.service';
 import { AuthService } from './app/services/auth.service';
+import { SignupUsecase } from './app/usecases/signup.usecase';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AuthService } from './app/services/auth.service';
   controllers: [AuthController],
   providers: [
     LoginUsecase,
+    SignupUsecase,
     UsersService,
     AuthService,
     JwtTokenService,

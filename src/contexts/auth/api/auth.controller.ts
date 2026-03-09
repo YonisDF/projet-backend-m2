@@ -1,14 +1,19 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { LoginUsecase } from '../app/usecases/login.usecase';
 import { LoginDto } from './dtos/login.dto';
+import { SignupDto } from './dtos/signup.dto';
+import { AuthService } from '../app/services/auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly loginUseCase: LoginUsecase) {}
+  constructor(private readonly authService: AuthService) {}
+
+  @Post('signup')
+  signup(@Body() dto: SignupDto) {
+    return this.authService.signup(dto.email, dto.password, dto.displayName);
+  }
 
   @Post('login')
   async login(@Body() dto: LoginDto) {
-    const result = await this.loginUseCase.execute(dto.email, dto.password);
-    return { access_token: result.accessToken };
+    return this.authService.login(dto.email, dto.password);
   }
 }
