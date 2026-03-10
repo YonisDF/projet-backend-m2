@@ -21,12 +21,12 @@ export class UsersService {
   async create(data: {
     email: string;
     passwordHash: string;
-    displayName?: string | null;
+    displayName: string;
   }): Promise<UserEntity> {
     const user = this.usersRepo.create({
       email: data.email,
       passwordHash: data.passwordHash,
-      displayName: data.displayName ?? null,
+      displayName: data.displayName,
     });
     return this.usersRepo.save(user);
   }

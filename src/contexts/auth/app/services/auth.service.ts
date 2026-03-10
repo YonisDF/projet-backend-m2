@@ -13,7 +13,7 @@ export class AuthService {
     return this.loginUsecase.execute(email, password);
   }
 
-  async signup(email: string, password: string, displayName?: string | null) {
+  async signup(email: string, password: string, displayName: string | null) {
     return this.signupUsecase.execute({ email, password, displayName });
   }
 }

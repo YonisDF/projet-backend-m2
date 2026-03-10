@@ -10,13 +10,17 @@ import { TypeOrmUserRepository } from './infra/persistence/repositories/typeorm-
 import { UsersService } from './app/services/users.service';
 import { AuthService } from './app/services/auth.service';
 import { SignupUsecase } from './app/usecases/signup.usecase';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET') || 'dev-secret-fallback',
+        signOptions: { expiresIn: '1h' },
+      }),
     }),
   ],
   controllers: [AuthController],

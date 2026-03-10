@@ -18,5 +18,5 @@ export class SignupDto {
   @IsOptional()
   @IsString()
   @MaxLength(50)
-  displayName?: string | null;
+  displayName: string | null;
 }

@@ -7,7 +7,7 @@ export interface UserRepository {
   create(data: {
     email: string;
     passwordHash: string;
-    displayName?: string | null;
+    displayName: string | null;
   }): Promise<UserEntity>;
 
   existsByEmail(email: string): Promise<boolean>;

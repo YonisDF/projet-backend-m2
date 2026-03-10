@@ -17,7 +17,7 @@ export class UserEntity {
   passwordHash: string;
 
   @Column({ nullable: true })
-  displayName?: string | null;
+  displayName: string;
 
   @CreateDateColumn()
   createdAt: Date;
