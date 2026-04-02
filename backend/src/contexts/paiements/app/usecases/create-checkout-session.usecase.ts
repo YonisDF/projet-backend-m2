@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { StripeService } from '../stripe.service';
+import { StripeService } from '../services/stripe.service';
 import { PaymentRepository } from '../ports/payment.repository.port';
 
 interface CreateCheckoutSessionProps {

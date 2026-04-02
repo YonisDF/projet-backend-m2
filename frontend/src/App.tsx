@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -99,6 +98,33 @@ function App() {
       console.error("Erreur paiement", e?.response?.data || e);
     }
   };
+
+  async function handleSubscribe() {
+    try {
+      const res = await fetch("http://localhost:3000/payments/subscription-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        body: JSON.stringify({
+          priceId: "price_1THlkAImV6YCPnmZ24iIQicW",
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Impossible de créer la session d’abonnement");
+      }
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error("Erreur abonnement Stripe:", error);
+    }
+  }
 
   const handleCreateConversation = async () => {
     try {
@@ -230,6 +256,20 @@ function App() {
             }}
           >
             Payer 9,90 €
+          </button>
+          <button
+            onClick={handleSubscribe}
+            style={{
+              padding: "12px 16px",
+              borderRadius: "8px",
+              border: "none",
+              background: "#635bff",
+              color: "white",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+          >
+            Passer au premium
           </button>
         </div>
 

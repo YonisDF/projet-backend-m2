@@ -3,7 +3,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import Stripe from 'stripe';
-import { StripeService } from '../stripe.service';
+import { StripeService } from '../services/stripe.service';
 import { PaymentRepository } from '../ports/payment.repository.port';
 
 @Injectable()
