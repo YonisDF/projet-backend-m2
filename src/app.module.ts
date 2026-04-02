@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './core/config/database.module';
 import { AuthModule } from './contexts/auth/auth.module';
+import { MessagingModule } from './contexts/chat/messaging.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AuthModule } from './contexts/auth/auth.module';
     }),
     DatabaseModule,
     AuthModule,
+    MessagingModule,
   ],
   controllers: [AppController],
   providers: [AppService],
