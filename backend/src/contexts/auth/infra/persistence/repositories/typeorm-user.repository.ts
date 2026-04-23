@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../../../app/ports/user.repository.port';
+import type { UserRepository } from '../../../app/ports/user.repository.port';
 
 @Injectable()
 export class TypeOrmUserRepository implements UserRepository {
@@ -22,14 +22,29 @@ export class TypeOrmUserRepository implements UserRepository {
   async create(data: {
     email: string;
     passwordHash: string;
-    displayName: string;
-  }): Promise<UserEntity> {
-    const entity = this.repo.create(data);
-    return this.repo.save(entity);
+    displayName: string | null;
+  }): Promise<void> {
+    const entity = this.repo.create({
+      email: data.email,
+      passwordHash: data.passwordHash,
+      displayName: data.displayName,
+    });
+
+    await this.repo.save(entity);
   }
 
   async existsByEmail(email: string): Promise<boolean> {
     const count = await this.repo.count({ where: { email } });
     return count > 0;
+  }
+
+  async findAllEmails(): Promise<string[]> {
+    const users = await this.repo.find({
+      select: {
+        email: true,
+      },
+    });
+
+    return users.map((user) => user.email);
   }
 }

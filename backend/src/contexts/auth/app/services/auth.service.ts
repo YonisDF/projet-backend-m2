@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LoginUsecase } from '../usecases/login.usecase';
 import { SignupUsecase } from '../usecases/signup.usecase';
 import { RefreshUsecase } from '../usecases/refresh.usecase';
+import { CheckEmailAvailabilityUsecase } from '../usecases/check-email-availability.usecase';
 
 @Injectable()
 export class AuthService {
@@ -9,6 +10,7 @@ export class AuthService {
     private readonly loginUsecase: LoginUsecase,
     private readonly signupUsecase: SignupUsecase,
     private readonly refreshUsecase: RefreshUsecase,
+    private readonly checkEmailUsecase: CheckEmailAvailabilityUsecase,
   ) {}
 
   async login(
@@ -36,5 +38,9 @@ export class AuthService {
     },
   ) {
     return this.refreshUsecase.execute(refreshToken, meta);
+  }
+
+  checkEmailAvailability(email: string) {
+    return this.checkEmailUsecase.execute(email);
   }
 }

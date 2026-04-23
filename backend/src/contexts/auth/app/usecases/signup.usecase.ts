@@ -1,12 +1,14 @@
 import { ConflictException, Inject, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import type { UserRepository } from '../ports/user.repository.port';
+import { EmailBloomFilterService } from '../services/email-bloom-filter.service';
 
 @Injectable()
 export class SignupUsecase {
   constructor(
     @Inject('UserRepository')
     private readonly users: UserRepository,
+    private readonly bloom: EmailBloomFilterService,
   ) {}
 
   async execute(props: {
@@ -14,7 +16,8 @@ export class SignupUsecase {
     password: string;
     displayName: string | null;
   }) {
-    const { email, password, displayName } = props;
+    const email = props.email.trim().toLowerCase();
+    const { password, displayName } = props;
 
     const exists = await this.users.existsByEmail(email);
     if (exists) {
@@ -28,5 +31,7 @@ export class SignupUsecase {
       passwordHash,
       displayName,
     });
+
+    this.bloom.add(email);
   }
 }

@@ -3,6 +3,7 @@ import { Request } from 'express';
 import { LoginDto } from './dtos/login.dto';
 import { SignupDto } from './dtos/signup.dto';
 import { RefreshDto } from './dtos/refresh.dto';
+import { CheckEmailDto } from './dtos/check-email.dto';
 import { AuthService } from '../app/services/auth.service';
 
 @Controller('auth')
@@ -11,7 +12,11 @@ export class AuthController {
 
   @Post('signup')
   signup(@Body() dto: SignupDto) {
-    return this.authService.signup(dto.email, dto.password, dto.displayName);
+    return this.authService.signup(
+      dto.email,
+      dto.password,
+      dto.displayName ?? null,
+    );
   }
 
   @Post('login')
@@ -34,5 +39,11 @@ export class AuthController {
       userAgent: req.headers['user-agent'] ?? undefined,
       ipAddress: ip,
     });
+  }
+
+  @Post('check-email')
+  async checkEmail(@Body() dto: CheckEmailDto) {
+    const result = await this.authService.checkEmailAvailability(dto.email);
+    return result;
   }
 }

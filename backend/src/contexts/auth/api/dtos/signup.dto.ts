@@ -8,15 +8,15 @@ import {
 
 export class SignupDto {
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsString()
   @MinLength(6)
   @MaxLength(72)
-  password: string;
+  password!: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(50)
-  displayName: string | null;
+  displayName?: string | null;
 }

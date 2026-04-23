@@ -12,6 +12,10 @@ import { AuthService } from './app/services/auth.service';
 import { LoginUsecase } from './app/usecases/login.usecase';
 import { SignupUsecase } from './app/usecases/signup.usecase';
 import { RefreshUsecase } from './app/usecases/refresh.usecase';
+import { EmailBloomFilterService } from './app/services/email-bloom-filter.service';
+import { CheckEmailAvailabilityUsecase } from './app/usecases/check-email-availability.usecase';
+import { EmailBloomWarmupService } from './app/services/email-bloom-filter-warmup.service';
+import { LocalCacheService } from './app/services/local-cache.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, RefreshTokenEntity])],
@@ -20,10 +24,14 @@ import { RefreshUsecase } from './app/usecases/refresh.usecase';
     LoginUsecase,
     SignupUsecase,
     RefreshUsecase,
+    CheckEmailAvailabilityUsecase,
     UsersService,
     AuthService,
     JwtAuthGuard,
     CustomTokenService,
+    EmailBloomFilterService,
+    EmailBloomWarmupService,
+    LocalCacheService,
     TypeOrmUserRepository,
     TypeOrmRefreshTokenRepository,
     {

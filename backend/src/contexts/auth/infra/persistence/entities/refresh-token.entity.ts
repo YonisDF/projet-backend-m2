@@ -13,37 +13,37 @@ export class RefreshTokenEntity {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   userId!: string;
 
   @ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user!: UserEntity;
 
-  @Column()
+  @Column({ type: 'varchar' })
   familyId!: string;
 
-  @Column()
+  @Column({ type: 'varchar' })
   tokenId!: string;
 
-  @Column()
+  @Column({ type: 'text' })
   tokenHash!: string;
 
-  @Column({ default: false })
+  @Column({ type: 'boolean', default: false })
   isRevoked!: boolean;
 
-  @Column()
+  @Column({ type: 'varchar' })
   deviceId!: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   userAgent!: string | null;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   ipAddress!: string | null;
 
   @Column({ type: 'timestamp' })
   expiresAt!: Date;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;
 }
