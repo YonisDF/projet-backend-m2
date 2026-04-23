@@ -1,6 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Ip, Post, Req } from '@nestjs/common';
+import { Request } from 'express';
 import { LoginDto } from './dtos/login.dto';
 import { SignupDto } from './dtos/signup.dto';
+import { RefreshDto } from './dtos/refresh.dto';
 import { AuthService } from '../app/services/auth.service';
 
 @Controller('auth')
@@ -13,7 +15,24 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() dto: LoginDto) {
-    return this.authService.login(dto.email, dto.password);
+  async login(@Body() dto: LoginDto, @Req() req: Request, @Ip() ip: string) {
+    return this.authService.login(dto.email, dto.password, {
+      deviceId: dto.deviceId,
+      userAgent: req.headers['user-agent'] ?? undefined,
+      ipAddress: ip,
+    });
+  }
+
+  @Post('refresh')
+  async refresh(
+    @Body() dto: RefreshDto,
+    @Req() req: Request,
+    @Ip() ip: string,
+  ) {
+    return this.authService.refresh(dto.refreshToken, {
+      deviceId: dto.deviceId,
+      userAgent: req.headers['user-agent'] ?? undefined,
+      ipAddress: ip,
+    });
   }
 }

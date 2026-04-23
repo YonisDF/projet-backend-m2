@@ -1,42 +1,40 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './api/auth.controller';
-import { LoginUsecase } from './app/usecases/login.usecase';
-import { JwtModule } from '@nestjs/jwt';
-import { JwtTokenService } from './infra/persistence/security/jwt-token.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthController } from './api/auth.controller';
 import { UserEntity } from './infra/persistence/entities/user.entity';
+import { RefreshTokenEntity } from './infra/persistence/entities/refresh-token.entity';
 import { JwtAuthGuard } from './infra/persistence/security/jwt-auth.guard';
+import { CustomTokenService } from './infra/persistence/security/custom-token.service';
 import { TypeOrmUserRepository } from './infra/persistence/repositories/typeorm-user.repository';
+import { TypeOrmRefreshTokenRepository } from './infra/persistence/repositories/typeorm-refresh-token.repository';
 import { UsersService } from './app/services/users.service';
 import { AuthService } from './app/services/auth.service';
+import { LoginUsecase } from './app/usecases/login.usecase';
 import { SignupUsecase } from './app/usecases/signup.usecase';
-import { ConfigService } from '@nestjs/config';
+import { RefreshUsecase } from './app/usecases/refresh.usecase';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([UserEntity]),
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get<string>('JWT_SECRET') || 'dev-secret-fallback',
-        signOptions: { expiresIn: '1h' },
-      }),
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([UserEntity, RefreshTokenEntity])],
   controllers: [AuthController],
   providers: [
     LoginUsecase,
     SignupUsecase,
+    RefreshUsecase,
     UsersService,
     AuthService,
-    JwtTokenService,
     JwtAuthGuard,
+    CustomTokenService,
     TypeOrmUserRepository,
+    TypeOrmRefreshTokenRepository,
     {
       provide: 'UserRepository',
       useClass: TypeOrmUserRepository,
     },
+    {
+      provide: 'RefreshTokenRepository',
+      useClass: TypeOrmRefreshTokenRepository,
+    },
   ],
-  exports: [JwtAuthGuard, JwtTokenService],
+  exports: [JwtAuthGuard, CustomTokenService],
 })
 export class AuthModule {}
