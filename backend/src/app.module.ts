@@ -6,6 +6,7 @@ import { DatabaseModule } from './core/config/database.module';
 import { AuthModule } from './contexts/auth/auth.module';
 import { MessagingModule } from './contexts/chat/messaging.module';
 import { PaymentsModule } from './contexts/paiements/payment.module';
+import { NotesModule } from './contexts/notes/notes.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { PaymentsModule } from './contexts/paiements/payment.module';
     AuthModule,
     MessagingModule,
     PaymentsModule,
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,7 +1,7 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { UserRepository } from '../ports/user.repository.port';
 import { EmailBloomFilterService } from '../services/email-bloom-filter.service';
-import { LocalCacheService } from '../services/local-cache.service';
+import { LocalCacheService } from '../../../../core/local-cache/services/local-cache.service';
 
 type CheckEmailAvailabilityResult = {
   exists: boolean;

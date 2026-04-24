@@ -15,7 +15,7 @@ import { RefreshUsecase } from './app/usecases/refresh.usecase';
 import { EmailBloomFilterService } from './app/services/email-bloom-filter.service';
 import { CheckEmailAvailabilityUsecase } from './app/usecases/check-email-availability.usecase';
 import { EmailBloomWarmupService } from './app/services/email-bloom-filter-warmup.service';
-import { LocalCacheService } from './app/services/local-cache.service';
+import { LocalCacheService } from '../../core/local-cache/services/local-cache.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, RefreshTokenEntity])],
